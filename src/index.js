@@ -1,46 +1,27 @@
 import express from "express";
+import serverless from "serverless-http";
 import cors from "cors";
-import morgan from "morgan";
-import { sequelize } from "./database/connection.js";
-
-// Rutas
-import categoryRoutes from "./routes/category.routes.js";
-import dailyJournalRoutes from "./routes/dailyJournal.routes.js";
-import taskExceptionRoutes from "./routes/exception.routes.js";
-import taskRoutes from "./routes/task.routes.js";
-import userRoutes from "./routes/user.routes.js";
-import weeklyReportRoutes from "./routes/weeklyReport.routes.js";
+import { sequelize } from "./db.js";
+import router from "./routes.js";
 
 const app = express();
-
-// Configuración CORS
-app.use(cors({
-  origin: "*",
-  methods: ["GET","POST","PUT","DELETE","PATCH","OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
-
-// Middlewares globales
+app.use(cors());
 app.use(express.json());
-app.use(morgan("dev"));
 
-// Ruta de prueba
-app.get("/", (req, res) => {
-  res.send("API funcionando correctamente");
-});
+app.use("/api", router);
 
-// Rutas principales
-app.use("/api/categories", categoryRoutes);
-app.use("/api/daily-journals", dailyJournalRoutes);
-app.use("/api/exceptions", taskExceptionRoutes);
-app.use("/api/tasks", taskRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/weekly-reports", weeklyReportRoutes);
+// Conexion a la BD (solo una vez)
+try {
+  await sequelize.authenticate();
+  console.log("DB OK");
+} catch (e) {
+  console.error("DB Error:", e);
+}
 
-// Conexión a la base de datos
-sequelize.authenticate()
-  .then(() => console.log("Base de datos conectada correctamente"))
-  .catch(err => console.error("Error al conectar la base de datos:", err));
+// Exporta el handler para Vercel
+export const handler = serverless(app);
 
-// ✅ Exportar app para Vercel
-export default app;
+// Para desarrollo local
+if (process.env.NODE_ENV !== "production") {
+  app.listen(3000, () => console.log("API local en http://localhost:3000"));
+}
