@@ -1,13 +1,15 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+console.log("DATABASE_URL =", process.env.DATABASE_URL);
+
 import { Sequelize } from "sequelize";
 
-if (!process.env.DATABASE_URL) {
+if (!process.env.DB_HOST) {
   throw new Error("DATABASE_URL is not defined");
 }
 
-export const sequelize = new Sequelize(process.env.DATABASE_URL, {
+export const sequelize = new Sequelize(process.env.DB_HOST, {
   dialect: "postgres",
   protocol: "postgres",
   logging: false,
