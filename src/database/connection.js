@@ -1,28 +1,38 @@
-import dotenv from "dotenv"
-dotenv.config()
-import { Sequelize } from "sequelize"
+import { Sequelize } from "sequelize";
+import dotenv from "dotenv";
 
-export const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
-    port: parseInt(process.env.DB_PORT),
-    logging: false,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
+dotenv.config();
+
+let sequelize;
+
+if (!global.sequelize) {
+  sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USERNAME,
+    process.env.DB_PASSWORD,
+    {
+      host: process.env.DB_HOST,
+      dialect: process.env.DB_DIALECT,
+      port: parseInt(process.env.DB_PORT),
+      logging: false,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+        family: 4,
       },
-      family: 4
-    },
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 30000,
-      idle: 10000
+      pool: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000,
+      },
     }
-  }
-)
+  );
+  global.sequelize = sequelize;
+} else {
+  sequelize = global.sequelize;
+}
+
+export { sequelize };
