@@ -13,11 +13,11 @@ import weeklyReportRoutes from "./routes/weeklyReport.routes.js";
 
 const app = express();
 
-// Configuración CORS para cualquier dominio
+// Configuración CORS
 app.use(cors({
-  origin: "*",           // permite cualquier dominio
-  methods: ["GET","POST","PUT","DELETE","PATCH","OPTIONS"], // permite todos los métodos
-  allowedHeaders: ["Content-Type", "Authorization"]          // permite headers comunes
+  origin: "*",
+  methods: ["GET","POST","PUT","DELETE","PATCH","OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
 // Middlewares globales
@@ -37,18 +37,10 @@ app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/weekly-reports", weeklyReportRoutes);
 
-// Conectar a la base de datos
-async function startServer() {
-  try {
-    await sequelize.authenticate();
-    console.log("Base de datos conectada correctamente");
+// Conexión a la base de datos
+sequelize.authenticate()
+  .then(() => console.log("Base de datos conectada correctamente"))
+  .catch(err => console.error("Error al conectar la base de datos:", err));
 
-    app.listen(3000, () => {
-      console.log("Servidor ejecutándose en http://localhost:3000");
-    });
-  } catch (error) {
-    console.error("Error al iniciar el servidor:", error);
-  }
-}
-
-startServer();
+// ✅ Exportar app para Vercel
+export default app;
