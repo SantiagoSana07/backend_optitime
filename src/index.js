@@ -13,8 +13,14 @@ import weeklyReportRoutes from "./routes/weeklyReport.routes.js";
 
 const app = express();
 
+// Configuración CORS para cualquier dominio
+app.use(cors({
+  origin: "*",           // permite cualquier dominio
+  methods: ["GET","POST","PUT","DELETE","PATCH","OPTIONS"], // permite todos los métodos
+  allowedHeaders: ["Content-Type", "Authorization"]          // permite headers comunes
+}));
+
 // Middlewares globales
-app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 
