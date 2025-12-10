@@ -1,27 +1,55 @@
-import express from "express";
-import serverless from "serverless-http";
+import express, { Router } from "express";
 import cors from "cors";
-import { sequelize } from "./db.js";
-import router from "./routes.js";
+import morgan from "morgan";
+import { sequelize } from "../database/connection.js";
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+import categoryRoutes from "./category.routes.js";
+import dailyJournalRoutes from "./dailyJournal.routes.js";
+import taskExceptionRoutes from "./exception.routes.js";
+import taskRoutes from "./task.routes.js";
+import userRoutes from "./user.routes.js";
+import weeklyReportRoutes from "./weeklyReport.routes.js";
 
-app.use("/api", router);
+const router = Router();
 
-// Conexion a la BD (solo una vez)
-try {
-  await sequelize.authenticate();
-  console.log("DB OK");
-} catch (e) {
-  console.error("DB Error:", e);
-}
+// Configuración CORS
+router.use(cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
-// Exporta el handler para Vercel
-export const handler = serverless(app);
+// Middlewares globales
+router.use(morgan("dev"));
+router.use(express.json());
 
-// Para desarrollo local
-if (process.env.NODE_ENV !== "production") {
-  app.listen(3000, () => console.log("API local en http://localhost:3000"));
-}
+// Ruta de prueba
+router.get("/", (req, res) => {
+    res.send("API funcionando correctamente");
+});
+
+// Rutas sin /api (ese prefijo lo pone server.js)
+router.use("/categories", categoryRoutes);
+router.use("/daily-journals", dailyJournalRoutes);
+router.use("/exceptions", taskExceptionRoutes);
+router.use("/tasks", taskRoutes);
+router.use("/users", userRoutes);
+router.use("/weekly-reports", weeklyReportRoutes);
+
+// Inicializar DB
+let dbInitialized = false;
+
+export const initDatabase = async () => {
+    if (!dbInitialized) {
+        try {
+            await sequelize.authenticate();
+            await sequelize.sync();
+            console.log("Base de datos conectada correctamente");
+            dbInitialized = true;
+        } catch (err) {
+            console.error("Error al conectar la base de datos:", err);
+        }
+    }
+};
+
+export default router;
