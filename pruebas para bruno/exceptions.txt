@@ -1,0 +1,84 @@
+////////////////////////////////////////////////////////////
+// DOCUMENTACIÓN API
+// EXCEPTIONS
+////////////////////////////////////////////////////////////
+
+
+1. Obtener todas las excepciones
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/exceptions
+
+Descripción:
+Devuelve la lista completa de excepciones almacenadas.
+
+--------------------------------
+
+
+2. Obtener excepción por ID
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/exceptions/:id
+
+Ejemplo:
+http://localhost:3000/api/exceptions/1
+
+Descripción:
+Devuelve una excepción específica según su ID.
+
+--------------------------------
+
+
+3. Crear una excepción
+--------------------------------
+Método: POST
+URL: http://localhost:3000/api/exceptions
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "task_id": 1,
+  "reason": "Distracción",
+  "description": "Usé mucho el celular y no completé el estudio"
+}
+
+Descripción:
+Registra una nueva excepción asociada a una tarea.
+
+--------------------------------
+
+
+4. Actualizar una excepción
+--------------------------------
+Método: PUT
+URL: http://localhost:3000/api/exceptions/:id
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "reason": "Cambio de prioridades",
+  "description": "Tuve una actividad importante y no pude cumplir la tarea"
+}
+
+Descripción:
+Actualiza los datos de una excepción ya registrada.
+
+--------------------------------
+
+
+5. Eliminar una excepción
+--------------------------------
+Método: DELETE
+URL: http://localhost:3000/api/exceptions/:id
+
+Ejemplo:
+http://localhost:3000/api/exceptions/1
+
+Descripción:
+Elimina una excepción por su ID.
+
+--------------------------------

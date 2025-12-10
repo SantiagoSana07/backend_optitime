@@ -1,0 +1,85 @@
+////////////////////////////////////////////////////////////
+// DOCUMENTACIÓN API
+// DAILY JOURNALS
+////////////////////////////////////////////////////////////
+
+
+1. Obtener todos los diarios
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/daily-journals
+
+Descripción:
+Devuelve todos los diarios registrados.
+
+--------------------------------
+
+
+2. Obtener diario por ID
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/daily-journals/:id
+
+Ejemplo:
+http://localhost:3000/api/daily-journals/1
+
+Descripción:
+Devuelve un diario específico según su ID.
+
+--------------------------------
+
+
+3. Crear un nuevo diario
+--------------------------------
+Método: POST
+URL: http://localhost:3000/api/daily-journals
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "user_id": 1,
+  "date": "2025-11-13",
+  "entry": "Hoy estudié poco y me distraje con el celu",
+  "rating": 2
+}
+
+Descripción:
+Crea un nuevo registro diario para un usuario.
+
+--------------------------------
+
+
+4. Actualizar un diario
+--------------------------------
+Método: PUT
+URL: http://localhost:3000/api/daily-journals/:id
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "entry": "Día productivo, estudié más",
+  "rating": 4
+}
+
+Descripción:
+Actualiza los valores de un diario existente.
+
+--------------------------------
+
+
+5. Eliminar un diario
+--------------------------------
+Método: DELETE
+URL: http://localhost:3000/api/daily-journals/:id
+
+Ejemplo:
+http://localhost:3000/api/daily-journals/1
+
+Descripción:
+Elimina un diario según su ID.
+
+--------------------------------

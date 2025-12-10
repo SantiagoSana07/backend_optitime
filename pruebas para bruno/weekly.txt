@@ -1,0 +1,86 @@
+////////////////////////////////////////////////////////////
+// DOCUMENTACIÓN API
+// WEEKLY REPORTS
+////////////////////////////////////////////////////////////
+
+
+1. Obtener todos los reportes semanales
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/weekly-reports
+
+Descripción:
+Devuelve todos los reportes semanales registrados.
+
+--------------------------------
+
+
+2. Obtener reporte semanal por ID
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/weekly-reports/:id
+
+Ejemplo:
+http://localhost:3000/api/weekly-reports/1
+
+Descripción:
+Devuelve un reporte semanal específico.
+
+--------------------------------
+
+
+3. Crear reporte semanal
+--------------------------------
+Método: POST
+URL: http://localhost:3000/api/weekly-reports
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "user_id": 1,
+  "week_start": "2025-11-10",
+  "completion_rate": 0.75,
+  "top_failure_reason": "Distracciones",
+  "recommendations": "Establecer horarios más estrictos"
+}
+
+Descripción:
+Crea un registro semanal para un usuario.
+
+--------------------------------
+
+
+4. Actualizar reporte semanal
+--------------------------------
+Método: PUT
+URL: http://localhost:3000/api/weekly-reports/:id
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "completion_rate": 0.90,
+  "recommendations": "Seguir la misma estrategia de enfoque"
+}
+
+Descripción:
+Actualiza un reporte semanal existente.
+
+--------------------------------
+
+
+5. Eliminar reporte semanal
+--------------------------------
+Método: DELETE
+URL: http://localhost:3000/api/weekly-reports/:id
+
+Ejemplo:
+http://localhost:3000/api/weekly-reports/1
+
+Descripción:
+Elimina un reporte semanal por ID.
+
+--------------------------------

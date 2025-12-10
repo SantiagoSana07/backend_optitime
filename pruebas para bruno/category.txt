@@ -1,0 +1,82 @@
+////////////////////////////////////////////////////////////
+// DOCUMENTACIÓN API
+// CATEGORÍAS
+////////////////////////////////////////////////////////////
+
+1. Obtener todas las categorías
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/categories
+
+Descripción:
+Devuelve la lista completa de categorías.
+
+--------------------------------
+
+
+2. Crear categoría
+--------------------------------
+Método: POST
+URL: http://localhost:3000/api/categories
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "name": "Nueva categoría",
+  "user_id": 1
+}
+
+Descripción:
+Crea una nueva categoría asociada a un usuario.
+
+--------------------------------
+
+
+3. Obtener categoría por ID
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/categories/:id
+
+Ejemplo:
+http://localhost:3000/api/categories/3
+
+Descripción:
+Devuelve una categoría según su ID.
+
+--------------------------------
+
+
+4. Actualizar categoría
+--------------------------------
+Método: PUT
+URL: http://localhost:3000/api/categories/:id
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "name": "Nombre actualizado",
+  "user_id": 1
+}
+
+Descripción:
+Actualiza los campos de una categoría específica.
+
+--------------------------------
+
+
+5. Eliminar categoría
+--------------------------------
+Método: DELETE
+URL: http://localhost:3000/api/categories/:id
+
+Ejemplo:
+http://localhost:3000/api/categories/2
+
+Descripción:
+Elimina una categoría por su ID.
+
+--------------------------------

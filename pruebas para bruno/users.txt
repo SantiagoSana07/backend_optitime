@@ -1,0 +1,84 @@
+////////////////////////////////////////////////////////////
+// DOCUMENTACIÓN API
+// USERS
+////////////////////////////////////////////////////////////
+
+
+1. Obtener todos los usuarios
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/users
+
+Descripción:
+Devuelve la lista completa de usuarios registrados.
+
+--------------------------------
+
+
+2. Obtener usuario por ID
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/users/:id
+
+Ejemplo:
+http://localhost:3000/api/users/1
+
+Descripción:
+Devuelve un usuario específico según su ID.
+
+--------------------------------
+
+
+3. Crear usuario
+--------------------------------
+Método: POST
+URL: http://localhost:3000/api/users
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "name": "Juan Pérez",
+  "email": "juan@example.com",
+  "password": "123456"
+}
+
+Descripción:
+Crea un nuevo usuario (nota: password no está cifrada).
+
+--------------------------------
+
+
+4. Actualizar usuario
+--------------------------------
+Método: PUT
+URL: http://localhost:3000/api/users/:id
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "name": "Juan Actualizado",
+  "email": "nuevo@example.com"
+}
+
+Descripción:
+Actualiza los datos de un usuario ya registrado.
+
+--------------------------------
+
+
+5. Eliminar usuario
+--------------------------------
+Método: DELETE
+URL: http://localhost:3000/api/users/:id
+
+Ejemplo:
+http://localhost:3000/api/users/1
+
+Descripción:
+Elimina un usuario según su ID.
+
+--------------------------------

@@ -1,0 +1,87 @@
+////////////////////////////////////////////////////////////
+// DOCUMENTACIÓN API
+// TASKS
+////////////////////////////////////////////////////////////
+
+
+1. Obtener todas las tareas
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/tasks
+
+Descripción:
+Devuelve la lista completa de tareas.
+
+--------------------------------
+
+
+2. Obtener tarea por ID
+--------------------------------
+Método: GET
+URL: http://localhost:3000/api/tasks/:id
+
+Ejemplo:
+http://localhost:3000/api/tasks/1
+
+Descripción:
+Devuelve una tarea específica según su ID.
+
+--------------------------------
+
+
+3. Crear una tarea
+--------------------------------
+Método: POST
+URL: http://localhost:3000/api/tasks
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "title": "Estudiar Node.js",
+  "description": "Completar ejercicios de Sequelize",
+  "status": "pending",
+  "due_date": "2025-11-20",
+  "category_id": 1,
+  "user_id": 1
+}
+
+Descripción:
+Crea una nueva tarea con la información suministrada.
+
+--------------------------------
+
+
+4. Actualizar una tarea
+--------------------------------
+Método: PUT
+URL: http://localhost:3000/api/tasks/:id
+
+Headers:
+Content-Type: application/json
+
+Body (JSON):
+{
+  "status": "completed",
+  "description": "Ejercicios terminados"
+}
+
+Descripción:
+Actualiza los datos de una tarea ya registrada.
+
+--------------------------------
+
+
+5. Eliminar una tarea
+--------------------------------
+Método: DELETE
+URL: http://localhost:3000/api/tasks/:id
+
+Ejemplo:
+http://localhost:3000/api/tasks/1
+
+Descripción:
+Elimina una tarea por su ID.
+
+--------------------------------
