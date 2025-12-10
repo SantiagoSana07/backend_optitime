@@ -3,7 +3,10 @@ dotenv.config();
 
 import { Sequelize } from "sequelize";
 
-// Opción 1: Usando URL completa (recomendado)
+if (!process.env.DATABASE_URL) {
+  throw new Error("DATABASE_URL is not defined");
+}
+
 export const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialect: "postgres",
   protocol: "postgres",
@@ -11,31 +14,10 @@ export const sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialectOptions: {
     ssl: {
       require: true,
-      rejectUnauthorized: false, // necesario para Supabase
+      rejectUnauthorized: false, // obligatorio para Supabase
     },
   },
 });
-
-// Opción 2: Usando variables separadas
-/*
-export const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: process.env.DB_DIALECT,
-    logging: false,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
-  }
-);
-*/
 
 async function dbConnect() {
   try {
