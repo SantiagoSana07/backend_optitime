@@ -3,17 +3,18 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
+// Evita múltiples conexiones en serverless
 let sequelize;
 
-if (!global.sequelize) {
-  sequelize = new Sequelize(
+if (!global._sequelize) {
+  global._sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USERNAME,
     process.env.DB_PASSWORD,
     {
       host: process.env.DB_HOST,
       dialect: process.env.DB_DIALECT,
-      port: parseInt(process.env.DB_PORT),
+      port: Number(process.env.DB_PORT),
       logging: false,
       dialectOptions: {
         ssl: {
@@ -30,9 +31,8 @@ if (!global.sequelize) {
       },
     }
   );
-  global.sequelize = sequelize;
-} else {
-  sequelize = global.sequelize;
 }
+
+sequelize = global._sequelize;
 
 export { sequelize };
