@@ -7,12 +7,14 @@ import {
   deleteTask
 } from "../controllers/task.controller.js";
 
+import { verifyToken } from "../middleware/verifyToken.js";
+
 const router = Router();
 
-router.get("/", getTasks);
-router.get("/:id", getTaskById);
-router.post("/", createTask);
-router.put("/:id", updateTask);
-router.delete("/:id", deleteTask);
+router.get("/", verifyToken, getTasks);
+router.get("/:id", verifyToken, getTaskById);
+router.post("/", verifyToken, createTask);
+router.put("/:id", verifyToken, updateTask);
+router.delete("/:id", verifyToken, deleteTask);
 
 export default router;

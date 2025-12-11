@@ -1,55 +1,77 @@
-import express, { Router } from "express";
+import express from "express";
 import cors from "cors";
 import morgan from "morgan";
-import { sequelize } from "../database/connection.js";
+import dotenv from "dotenv";
+import path from "path";
+import fs from "fs";
+import { createServer as createHttpsServer } from "https";
 
-import categoryRoutes from "./category.routes.js";
-import dailyJournalRoutes from "./dailyJournal.routes.js";
-import taskExceptionRoutes from "./exception.routes.js";
-import taskRoutes from "./task.routes.js";
-import userRoutes from "./user.routes.js";
-import weeklyReportRoutes from "./weeklyReport.routes.js";
+dotenv.config();
 
-const router = Router();
+// Importación de rutas
+import LoginRoutes from "./routes/login.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
+import dailyJournalRoutes from "./routes/dailyJournal.routes.js";
+import taskExceptionRoutes from "./routes/exception.routes.js";
+import taskRoutes from "./routes/task.routes.js";
+import userRoutes from "./routes/user.routes.js";
+import weeklyReportRoutes from "./routes/weeklyReport.routes.js";
 
-// Configuración CORS
-router.use(cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"]
+const app = express();
+const port = process.env.PORT_API || 3001;
+
+console.log("PUERTO API:", port);
+
+// Middlewares
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// Middlewares globales
-router.use(morgan("dev"));
-router.use(express.json());
+app.use(express.json());
+app.use(morgan("dev"));
 
-// Ruta de prueba
-router.get("/", (req, res) => {
-    res.send("API funcionando correctamente");
+// Ruta base
+app.get("/", (req, res) => {
+  res.send("API funcionando correctamente (sin Sequelize)");
 });
 
-// Rutas sin /api (ese prefijo lo pone server.js)
-router.use("/categories", categoryRoutes);
-router.use("/daily-journals", dailyJournalRoutes);
-router.use("/exceptions", taskExceptionRoutes);
-router.use("/tasks", taskRoutes);
-router.use("/users", userRoutes);
-router.use("/weekly-reports", weeklyReportRoutes);
+// Rutas API
+app.use("/api/login", LoginRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/daily-journals", dailyJournalRoutes);
+app.use("/api/exceptions", taskExceptionRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/weekly-reports", weeklyReportRoutes);
 
-// Inicializar DB
-let dbInitialized = false;
+// ----- MODO DESARROLLO (HTTP normal) -----
+if (process.env.NODE_ENV === "development") {
+  app.listen(port, () => {
+    console.log(`Servidor HTTP corriendo en el puerto ${port}`);
+  });
+} 
+// ----- MODO PRODUCCIÓN (HTTPS) -----
+else {
+  let httpsOptions;
 
-export const initDatabase = async () => {
-    if (!dbInitialized) {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync();
-            console.log("Base de datos conectada correctamente");
-            dbInitialized = true;
-        } catch (err) {
-            console.error("Error al conectar la base de datos:", err);
-        }
-    }
-};
+  const keyPath = "./certs/cert.key";
+  const certPath = "./certs/cert.crt";
 
-export default router;
+  try {
+    httpsOptions = {
+      key: fs.readFileSync(keyPath),
+      cert: fs.readFileSync(certPath),
+    };
+  } catch (error) {
+    console.error("Error al cargar certificados SSL:", error.message);
+    process.exit(1);
+  }
+
+  const httpsServer = createHttpsServer(httpsOptions, app);
+
+  httpsServer.listen(port, () => {
+    console.log(`Servidor HTTPS listo en el puerto ${port}`);
+  });
+}
